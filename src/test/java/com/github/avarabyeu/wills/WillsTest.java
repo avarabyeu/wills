@@ -18,7 +18,6 @@ package com.github.avarabyeu.wills;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
-import com.smarttested.qa.smartassert.SmartAssert;
 import com.smarttested.qa.smartassert.junit.SoftAssertVerifier;
 import org.junit.Assert;
 import org.junit.Rule;
@@ -87,7 +86,7 @@ public class WillsTest {
     public void testWhenFailed() {
         final List<Throwable> results = Lists.newArrayList();
         RuntimeException throwable = new RuntimeException("");
-        Will<String> will = Wills.failedWill(throwable, String.class).whenFailed(new Action<Throwable>() {
+        Will<String> will = Wills.<String>failedWill(throwable).whenFailed(new Action<Throwable>() {
             @Override
             public void apply(Throwable throwable) {
                 results.add(throwable);
