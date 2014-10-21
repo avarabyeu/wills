@@ -5,10 +5,6 @@ Useful utils built on top of Guava's ListenableFuture
 
 * [Maven Dependencies](#maven-dependencies)
 
-
-Basically, **restendpoint** is convenient wrapper around 
-[Apache HttpComponents Async Client](http://hc.apache.org/httpcomponents-asyncclient-4.0.x/)
-
 ## Maven Dependencies
 
 Last stable version:
