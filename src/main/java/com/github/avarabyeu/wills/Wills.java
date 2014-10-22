@@ -170,16 +170,10 @@ public final class Wills {
             try {
                 return delegate().get();
             } catch (InterruptedException e) {
-                throw Throwables.propagate(e); //throw new RuntimeInterruptedException(e);
+                /* throw RuntimeException here? */
+                throw Throwables.propagate(e);
             } catch (ExecutionException e) {
-                final Throwable cause = e.getCause();
-                if (cause instanceof RuntimeException) {
-                    throw (RuntimeException) cause;
-                }
-                if (cause instanceof Error) {
-                    throw (Error) cause;
-                }
-                throw new RuntimeException(cause);
+                throw Throwables.propagate(e);
             }
         }
 
