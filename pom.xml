@@ -10,7 +10,7 @@
 
     <groupId>com.github.avarabyeu</groupId>
     <artifactId>wills</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.2-SNAPSHOT</version>
 
     <name>Wills</name>
     <description>Useful utils built on top of Guava's ListenableFuture</description>
