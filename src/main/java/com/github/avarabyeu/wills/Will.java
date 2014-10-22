@@ -54,6 +54,14 @@ public interface Will<T> extends ListenableFuture<T> {
     Will<T> whenFailed(Action<Throwable> action);
 
     /**
+     * Adds callback to the future object. Will be executed once future is completed
+     *
+     * @param action Some action with Boolean type. TRUE in case future is successful
+     * @return This object
+     */
+    Will<T> whenCompleted(Action<Boolean> action);
+
+    /**
      * Adds {@link com.google.common.util.concurrent.FutureCallback} for future object.
      * Will be executed when future result is availible or some exception thrown
      *

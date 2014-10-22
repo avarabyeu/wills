@@ -22,6 +22,7 @@ import com.google.common.base.Throwables;
 import com.google.common.util.concurrent.*;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -75,8 +76,8 @@ public final class Wills {
     /**
      * Creates failed {@link Will} using provided {@link java.lang.Throwable}
      *
-     * @param throwable  Will exception
-     * @param <A>        Type of Will
+     * @param throwable Will exception
+     * @param <A>       Type of Will
      * @return Created Will
      */
     public static <A> Will<A> failedWill(@Nonnull Throwable throwable) {
@@ -186,6 +187,22 @@ public final class Wills {
         @Override
         public Will<A> whenFailed(@Nonnull Action<Throwable> e) {
             callback(Wills.<A>onFailureDo(e));
+            return this;
+        }
+
+        @Override
+        public Will<A> whenCompleted(final Action<Boolean> action) {
+            callback(new FutureCallback<A>() {
+                @Override
+                public void onSuccess(@Nullable A result) {
+                    action.apply(true);
+                }
+
+                @Override
+                public void onFailure(Throwable t) {
+                    action.apply(false);
+                }
+            });
             return this;
         }
 

@@ -25,6 +25,7 @@ import org.junit.Test;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.smarttested.qa.smartassert.SmartAssert.assertHard;
 import static com.smarttested.qa.smartassert.SmartAssert.assertSoft;
@@ -101,5 +102,29 @@ public class WillsTest {
             Assert.assertThat(e, is(throwable));
         }
         assertHard(results, hasItem(throwable), "Will whenFail statement is not processed");
+    }
+
+    @Test
+    public void testWhenCompletedSuccessful() {
+        final AtomicBoolean result = new AtomicBoolean();
+        Wills.will("successful").whenCompleted(new Action<Boolean>() {
+            @Override
+            public void apply(Boolean aBoolean) {
+                result.set(aBoolean);
+            }
+        });
+        assertHard(result.get(), is(true), "Incorrect when completed value");
+    }
+
+    @Test
+    public void testWhenCompletedFailed() {
+        final AtomicBoolean result = new AtomicBoolean(true);
+        Wills.failedWill(new RuntimeException()).whenCompleted(new Action<Boolean>() {
+            @Override
+            public void apply(Boolean aBoolean) {
+                result.set(aBoolean);
+            }
+        });
+        assertHard(result.get(), is(false), "Incorrect when completed value");
     }
 }

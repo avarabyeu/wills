@@ -6,7 +6,6 @@ Useful utils built on top of Guava's ListenableFuture
 * [Maven Dependencies](#maven-dependencies)
 
 ## Maven Dependencies
-
 Last stable version:
 ```xml
 <dependency>
@@ -18,7 +17,7 @@ Last stable version:
 
 ## The problem 'wills' solve
 Google did perfect job releasing Guava - set of very useful utilities for collections, I/O, concurrency and others java APIs.
-Guava's concurrency utilities helps to solve widely used problems such as adding callbacks very fast and productive. 
+Guava's concurrency utilities helps to solve widely used cases such as adding callbacks, transforming/filtering futures. 
 But, sometimes it looks a bit ridiculous. Just take a look:
 
 ```java
@@ -39,7 +38,7 @@ Futures.addCallback(future, new FutureCallback<String>() {
 
 ```
 
-Too much lines of code, right? Adding callbacks via Futures makes sense if you want to add several ones. But what if we need to add just one?
+Too much lines of code, right? Adding callbacks via Futures make sense if you want to add several ones. But what if you need to add just one?
 This is what 'wills' do for you:
 
 ```java
@@ -69,6 +68,122 @@ executorService.submit(new SomeCallable<String>())
 
 ```
 
-Another words, using 'wills' you are able to build chained method calls which makes code cleaner and faster to implement.
+Another words, **using 'wills' you are able to build chained method calls** which makes code cleaner and faster to implement.
 Actually, com.github.avarabyeu.wills.Will interface extends Guava's ListanableFuture with some useful convenience methods.
 Go through documentation to find out explanation about them.
+
+## Methods
+
+### whenDone
+Executes some action once Future is done.
+
+Example:
+```java
+Will<String> will = Wills.will("SOME RESULT")
+    .whenDone(new Action<String>() {
+        @Override
+        public void apply(String o) {
+            doSomething():
+        }
+});
+
+```
+Example (JDK8):
+```java
+Wills.will("SOME RESULT").whenDone(result -> doSomething());
+
+```
+
+
+Guava's analogue:
+
+```java
+ListenableFuture<?> future = Futures.immediateFuture("SOME RESULT");
+Futures.addCallback(future, new FutureCallback<Object>() {
+    @Override
+    public void onSuccess(@Nullable Object result) {
+        doSomething();
+    }
+
+    @Override
+    public void onFailure(Throwable t) {
+        //do nothing
+    }
+});
+```
+
+### whenFailed
+Executes some action in case Future is failed
+
+Example:
+```java
+Will<String> will = Wills.will("SOME RESULT")
+    .whenFailed(new Action<String>() {
+        @Override
+        public void apply(String o) {
+            doSomething():
+        }
+});
+
+```
+Example (JDK8):
+```java
+Wills.will("SOME RESULT").whenFailed(result -> doSomething());
+
+```
+
+
+Guava's analogue:
+
+```java
+ListenableFuture<?> future = Futures.immediateFuture("SOME RESULT");
+Futures.addCallback(future, new FutureCallback<Object>() {
+    @Override
+    public void onSuccess(@Nullable Object result) {
+        //do nothing
+    }
+
+    @Override
+    public void onFailure(Throwable t) {
+        doSomething();
+    }
+});
+```
+
+### whenCompleted
+Executes some action once Future is completed. Doesn't matter successful or not.
+Here action is boolean-type, because there will be passed execution result (TRUE in case if future execution is successful)
+
+Example:
+```java
+Will<String> will = Wills.will("SOME RESULT")
+    .whenCompleted(new Action<Boolean>() {
+        @Override
+        public void apply(Boolean successful) {
+            doSomething():
+        }
+});
+
+```
+Example (JDK8):
+```java
+Wills.will("SOME RESULT").whenCompleted(successful -> doSomething());
+
+```
+
+
+Guava's analogue: There is no direct analogue. You can only can add the following callback:
+
+```java
+new FutureCallback<A>() {
+    @Override
+    public void onSuccess(@Nullable A result) {
+        action.apply(true);
+    }
+
+    @Override
+    public void onFailure(Throwable t) {
+        action.apply(false);
+    }
+});
+```
