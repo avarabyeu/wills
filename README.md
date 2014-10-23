@@ -1,4 +1,4 @@
-# wills [![Build Status](https://travis-ci.org/avarabyeu/wills.svg?branch=master)](https://travis-ci.org/avarabyeu/wills)
+# wills [![Build Status](https://travis-ci.org/avarabyeu/wills.svg?branch=master)](https://travis-ci.org/avarabyeu/wills) [![Maven central](https://maven-badges.herokuapp.com/maven-central/com.github.avarabyeu/wills/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.avarabyeu/wills)
 
 Useful utils built on top of Guava's ListenableFuture
 
