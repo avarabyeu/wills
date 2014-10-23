@@ -107,7 +107,7 @@ public class WillsTest {
     @Test
     public void testWhenCompletedSuccessful() {
         final AtomicBoolean result = new AtomicBoolean();
-        Wills.of("successful").whenCompleted(new Action<Boolean>() {
+        Wills.of("successful").whenDone(new Action<Boolean>() {
             @Override
             public void apply(Boolean aBoolean) {
                 result.set(aBoolean);
@@ -119,7 +119,7 @@ public class WillsTest {
     @Test
     public void testWhenCompletedFailed() {
         final AtomicBoolean result = new AtomicBoolean(true);
-        Wills.failedWill(new RuntimeException()).whenCompleted(new Action<Boolean>() {
+        Wills.failedWill(new RuntimeException()).whenDone(new Action<Boolean>() {
             @Override
             public void apply(Boolean aBoolean) {
                 result.set(aBoolean);

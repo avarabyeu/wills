@@ -150,14 +150,14 @@ Futures.addCallback(future, new FutureCallback<Object>() {
 });
 ```
 
-### whenCompleted
+### whenDone
 Executes some action once Future is completed. Doesn't matter successful or not.
 Here action is boolean-type, because there will be passed execution result (TRUE in case if future execution is successful)
 
 Example:
 ```java
 Will<String> will = Wills.of("SOME RESULT")
-    .whenCompleted(new Action<Boolean>() {
+    .whenDone(new Action<Boolean>() {
         @Override
         public void apply(Boolean successful) {
             doSomething():
@@ -167,7 +167,7 @@ Will<String> will = Wills.of("SOME RESULT")
 ```
 Example (JDK8):
 ```java
-Wills.of("SOME RESULT").whenCompleted(successful -> doSomething());
+Wills.of("SOME RESULT").whenDone(successful -> doSomething());
 
 ```
 

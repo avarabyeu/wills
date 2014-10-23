@@ -59,7 +59,7 @@ public interface Will<T> extends ListenableFuture<T> {
      * @param action Some action with Boolean type. TRUE in case future is successful
      * @return This object
      */
-    Will<T> whenCompleted(Action<Boolean> action);
+    Will<T> whenDone(Action<Boolean> action);
 
     /**
      * Adds {@link com.google.common.util.concurrent.FutureCallback} for future object.

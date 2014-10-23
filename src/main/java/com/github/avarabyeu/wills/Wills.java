@@ -191,7 +191,7 @@ public final class Wills {
         }
 
         @Override
-        public Will<A> whenCompleted(final Action<Boolean> action) {
+        public Will<A> whenDone(final Action<Boolean> action) {
             callback(new FutureCallback<A>() {
                 @Override
                 public void onSuccess(@Nullable A result) {
