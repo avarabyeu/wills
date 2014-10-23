@@ -18,6 +18,10 @@ package com.github.avarabyeu.wills;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
+import com.google.common.util.concurrent.FutureFallback;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
+import com.smarttested.qa.smartassert.SmartAssert;
 import com.smarttested.qa.smartassert.junit.SoftAssertVerifier;
 import org.junit.Assert;
 import org.junit.Rule;
@@ -25,6 +29,7 @@ import org.junit.Test;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.smarttested.qa.smartassert.SmartAssert.assertHard;
@@ -126,5 +131,25 @@ public class WillsTest {
             }
         });
         assertHard(result.get(), is(false), "Incorrect when completed value");
+    }
+
+    @Test
+    public void testReplaceFailed() throws ExecutionException, InterruptedException {
+
+        final String ok = "OK";
+        Will<String> okWillFallback = Wills.<String>failedWill(new RuntimeException()).replaceFailed(new FutureFallback<String>() {
+            @Override
+            public ListenableFuture<String> create(Throwable t) throws Exception {
+                return Futures.immediateFuture(ok);
+            }
+        });
+        SmartAssert.assertSoft(okWillFallback.obtain(), is(ok), "Failed Will is not with Fallback");
+
+
+        Will<String> okWill = Wills.<String>failedWill(new RuntimeException()).replaceFailed(Wills.of(ok));
+        SmartAssert.assertSoft(okWill.obtain(), is(ok), "Failed Will is not replaced with Will");
+
+        Will<String> okWillListenableFuture = Wills.<String>failedWill(new RuntimeException()).replaceFailed(Futures.immediateFuture(ok));
+        SmartAssert.assertSoft(okWillListenableFuture.obtain(), is(ok), "Failed Will is not replaced with ListenableFuture");
     }
 }

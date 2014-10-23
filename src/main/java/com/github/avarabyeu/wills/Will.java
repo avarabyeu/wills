@@ -18,7 +18,10 @@ package com.github.avarabyeu.wills;
 
 import com.google.common.base.Function;
 import com.google.common.util.concurrent.FutureCallback;
+import com.google.common.util.concurrent.FutureFallback;
 import com.google.common.util.concurrent.ListenableFuture;
+
+import javax.annotation.Nonnull;
 
 /**
  * Useful wrapper around Google's {@link com.google.common.util.concurrent.ListenableFuture}
@@ -31,6 +34,8 @@ public interface Will<T> extends ListenableFuture<T> {
 
     /**
      * Blocks current thread until future object is availible or some exception thrown
+     * Signature-free version of {@link java.util.concurrent.Future#get()},
+     * propagates checked exceptions as runtume exceptions
      *
      * @return future result
      * @see {@link com.google.common.util.concurrent.ListenableFuture#isDone()}
@@ -59,7 +64,7 @@ public interface Will<T> extends ListenableFuture<T> {
      * @param action Some action with Boolean type. TRUE in case future is successful
      * @return This object
      */
-    Will<T> whenDone(Action<Boolean> action);
+    Will<T> whenDone(@Nonnull Action<Boolean> action);
 
     /**
      * Adds {@link com.google.common.util.concurrent.FutureCallback} for future object.
@@ -69,6 +74,33 @@ public interface Will<T> extends ListenableFuture<T> {
      * @return This object
      */
     Will<T> callback(FutureCallback<T> callback);
+
+    /**
+     * Replaces future provided by fallback in case if current Will fails
+     * <b>PAY ATTENTION - this method creates new Will instance</b>
+     *
+     * @param fallback New Future Factory
+     * @return <b>NEW</b> Will
+     */
+    Will<T> replaceFailed(FutureFallback<? extends T> fallback);
+
+    /**
+     * Replaces current Will with new one based on ListenableFuture in case of fail
+     * <b>PAY ATTENTION - this method creates new Will instance</b>
+     *
+     * @param future New ListenableFuture
+     * @return <b>NEW</b> Will
+     */
+    Will<T> replaceFailed(ListenableFuture<T> future);
+
+    /**
+     * Replaces current will with new one in case of fail
+     * <b>PAY ATTENTION - this method creates new Will instance</b>
+     *
+     * @param future <b>NEW</b> Will
+     * @return
+     */
+    Will<T> replaceFailed(Will<T> future);
 
     /**
      * Creates new {@link Will} containing transformed result of this {@link Will} result using provided function

@@ -4,6 +4,16 @@ Useful utils built on top of Guava's ListenableFuture
 
 
 * [Maven Dependencies](#maven-dependencies)
+* [The problem 'wills' solve](#the-problem-'wills'-solve)
+* [Creation](#creation)
+    * [from JKSs Future](#from-jdks-future)
+    * [from Guava's Future](#from-guava's-listenablefuture)
+    * [Decorating ExecutorService](#decorating-executorservice)
+* [Callbacks](#callbacks)
+    * [whenSuccessful](#whenSuccessful)
+    * [whenFailed](#whenFailed)
+    * [whenDone](#whenDone)
+* [Fallback (Replacing Future in case of failure)](#Fallback-Replacing-Future-in-case-of-failure) 
 
 ## Maven Dependencies
 Last stable version:
@@ -72,7 +82,13 @@ Another words, **using 'wills' you are able to build chained method calls** whic
 Actually, com.github.avarabyeu.wills.Will interface extends Guava's ListanableFuture with some useful convenience methods.
 Go through documentation to find out explanation about them.
 
-## Methods
+## Creation
+
+### from JDKs Future
+### from Guava's ListenableFuture
+### Decorating ExecutorService
+
+## Callbacks
 
 ### whenSuccessful
 Executes some action once Future is done.
@@ -187,3 +203,5 @@ new FutureCallback<A>() {
     }
 });
 ```
+
+## Fallback (Replacing Future in case of failure)

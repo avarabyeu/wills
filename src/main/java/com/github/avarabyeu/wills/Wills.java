@@ -191,7 +191,8 @@ public final class Wills {
         }
 
         @Override
-        public Will<A> whenDone(final Action<Boolean> action) {
+        public Will<A> whenDone(@Nonnull final Action<Boolean> action) {
+            Preconditions.checkNotNull(action, "Action mustn't be null");
             callback(new FutureCallback<A>() {
                 @Override
                 public void onSuccess(@Nullable A result) {
@@ -217,6 +218,25 @@ public final class Wills {
             return forListenableFuture(Futures.transform(this, function));
         }
 
+        @Override
+        public Will<A> replaceFailed(FutureFallback<? extends A> fallback) {
+            return new Of<A>(Futures.withFallback(delegate(), fallback));
+        }
+
+        @Override
+        public Will<A> replaceFailed(final ListenableFuture<A> future) {
+            return replaceFailed(new FutureFallback<A>() {
+                @Override
+                public ListenableFuture<A> create(Throwable t) throws Exception {
+                    return future;
+                }
+            });
+        }
+
+        @Override
+        public Will<A> replaceFailed(final Will<A> future) {
+            return replaceFailed((ListenableFuture<A>) future);
+        }
 
         @Override
         public <B> Will<B> flatMap(final Function<? super A, Will<B>> f) {
