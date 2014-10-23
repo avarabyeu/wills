@@ -85,8 +85,32 @@ Go through documentation to find out explanation about them.
 ## Creation
 
 ### from JDKs Future
+
+```java
+Future<String> future = ...;
+Will<String> will = Wills.forFuture(future);
+```
+
 ### from Guava's ListenableFuture
+
+```java
+ListenableFuture<String> future = ...;
+Will<String> will = Wills.forListenableFuture(future);
+```
+
 ### Decorating ExecutorService
+
+This is most simple way to work with 'wills':
+ 
+```java
+WillExecutorService executorService = WillExecutors.willDecorator(Executors.newFixedThreadPool(10));
+Will<String> will = executorService.submit(new Callable<String>() {
+    @Override
+    public String call() throws Exception {
+        return "Hello world!";
+    }
+});
+```
 
 ## Callbacks
 
@@ -205,3 +229,44 @@ new FutureCallback<A>() {
 ```
 
 ## Fallback (Replacing Future in case of failure)
+Sometimes you need something like default value for you Future. Guava's fallbacks mechanism 
+is a good solution for such cases:
+
+```java
+ListeningExecutorService executorService = MoreExecutors.listeningDecorator(Executors.newFixedThreadPool(10));
+ListenableFuture<String> future = executorService.submit(new Callable<String>() {
+    @Override
+    public String call() throws Exception {
+        return "Hello world!";
+    }
+});
+future = Futures.withFallback(future, new FutureFallback<String>() {
+    @Override
+    public ListenableFuture<String> create(Throwable t) throws Exception {
+        return Futures.immediateFuture("NO RESULTS!");
+    }
+});
+```
+
+Here is more simple version in Will style:
+
+```java
+WillExecutorService executorService = WillExecutors.willDecorator(Executors.newFixedThreadPool(10));
+Will<String> will = executorService.submit(new Callable<String>() {
+    @Override
+    public String call() throws Exception {
+        return "Hello world!";
+    }
+}).replaceFailed(Wills.of("NO RESULTS!"));        
+```
+if you wanna get access to future's exception, you still may use Guava's FutureFallback:
+
+```java
+
+will = will.replaceFailed(new FutureFallback<String>() {
+     @Override
+     public ListenableFuture<String> create(Throwable t) throws Exception {
+         return Wills.of("NO RESULTS!");
+     }
+ });
+```
