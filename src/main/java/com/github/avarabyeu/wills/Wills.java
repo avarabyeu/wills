@@ -69,7 +69,7 @@ public final class Wills {
      * @param <A>   Type of Will
      * @return Will
      */
-    public static <A> Will<A> will(A value) {
+    public static <A> Will<A> of(A value) {
         return new Of<A>(Futures.immediateFuture(value));
     }
 
@@ -179,7 +179,7 @@ public final class Wills {
         }
 
         @Override
-        public Will<A> whenDone(@Nonnull Action<A> e) {
+        public Will<A> whenSuccessful(@Nonnull Action<A> e) {
             callback(onSuccessDo(e));
             return this;
         }
@@ -228,13 +228,13 @@ public final class Wills {
                 }
             };
 
-            whenDone(new Action<A>() {
+            whenSuccessful(new Action<A>() {
                 @Override
                 public void apply(A v) {
                     try {
                         Will<B> next = f.apply(v);
                         Preconditions.checkNotNull(next, "Created Will shouldn't be null");
-                        next.whenDone(new Action<B>() {
+                        next.whenSuccessful(new Action<B>() {
                             @Override
                             public void apply(B t) {
                                 result.set(t);

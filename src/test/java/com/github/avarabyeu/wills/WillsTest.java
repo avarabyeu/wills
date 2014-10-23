@@ -46,7 +46,7 @@ public class WillsTest {
 
     @Test
     public void testWill() {
-        Will<String> will = Wills.will(TEST_STRING);
+        Will<String> will = Wills.of(TEST_STRING);
 
         assertSoft(will.isDone(), is(true), "Incorrect Will status");
         assertSoft(will.isCancelled(), is(false), "Incorrect Will status");
@@ -55,7 +55,7 @@ public class WillsTest {
 
     @Test
     public void testMap() {
-        Will<String> will = Wills.will(TEST_STRING).map(new Function<String, String>() {
+        Will<String> will = Wills.of(TEST_STRING).map(new Function<String, String>() {
 
             @Nullable
             @Override
@@ -70,9 +70,9 @@ public class WillsTest {
     }
 
     @Test
-    public void testWhenDone() {
+    public void testwhenSuccessful() {
         final List<String> results = Lists.newArrayList();
-        Will<String> will = Wills.will(TEST_STRING).whenDone(new Action<String>() {
+        Will<String> will = Wills.of(TEST_STRING).whenSuccessful(new Action<String>() {
             @Override
             public void apply(String s) {
                 results.add(s);
@@ -80,7 +80,7 @@ public class WillsTest {
         });
         /* waits for done */
         will.obtain();
-        assertHard(results, hasItem(TEST_STRING), "Will whenDone statement is not processed");
+        assertHard(results, hasItem(TEST_STRING), "Will whenSuccessful statement is not processed");
     }
 
     @Test
@@ -107,7 +107,7 @@ public class WillsTest {
     @Test
     public void testWhenCompletedSuccessful() {
         final AtomicBoolean result = new AtomicBoolean();
-        Wills.will("successful").whenCompleted(new Action<Boolean>() {
+        Wills.of("successful").whenCompleted(new Action<Boolean>() {
             @Override
             public void apply(Boolean aBoolean) {
                 result.set(aBoolean);

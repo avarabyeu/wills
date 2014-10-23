@@ -46,7 +46,7 @@ WillExecutorService executorService = WillExecutors
             .willDecorator(Executors.newFixedThreadPool(1));
 Will<String> future = executorService
             .submit(new SomeCallable<String>())
-.whenDone(new Action<String>() {
+.whenSuccessful(new Action<String>() {
     @Override
     public void apply(String s) {
         System.out.println("I'm OK!");
@@ -63,7 +63,7 @@ or even more simple in JDK8 style:
 ```java
 
 executorService.submit(new SomeCallable<String>())
-     .whenDone(result -> System.out.println("I'm OK!"))
+     .whenSuccessful(result -> System.out.println("I'm OK!"))
      .whenFailed(throwable -> System.out.println("I'm not!"));
 
 ```
@@ -74,13 +74,13 @@ Go through documentation to find out explanation about them.
 
 ## Methods
 
-### whenDone
+### whenSuccessful
 Executes some action once Future is done.
 
 Example:
 ```java
-Will<String> will = Wills.will("SOME RESULT")
-    .whenDone(new Action<String>() {
+Will<String> will = Wills.of("SOME RESULT")
+    .whenSuccessful(new Action<String>() {
         @Override
         public void apply(String o) {
             doSomething():
@@ -90,7 +90,7 @@ Will<String> will = Wills.will("SOME RESULT")
 ```
 Example (JDK8):
 ```java
-Wills.will("SOME RESULT").whenDone(result -> doSomething());
+Wills.of("SOME RESULT").whenSuccessful(result -> doSomething());
 
 ```
 
@@ -117,7 +117,7 @@ Executes some action in case Future is failed
 
 Example:
 ```java
-Will<String> will = Wills.will("SOME RESULT")
+Will<String> will = Wills.of("SOME RESULT")
     .whenFailed(new Action<String>() {
         @Override
         public void apply(String o) {
@@ -128,7 +128,7 @@ Will<String> will = Wills.will("SOME RESULT")
 ```
 Example (JDK8):
 ```java
-Wills.will("SOME RESULT").whenFailed(result -> doSomething());
+Wills.of("SOME RESULT").whenFailed(result -> doSomething());
 
 ```
 
@@ -156,7 +156,7 @@ Here action is boolean-type, because there will be passed execution result (TRUE
 
 Example:
 ```java
-Will<String> will = Wills.will("SOME RESULT")
+Will<String> will = Wills.of("SOME RESULT")
     .whenCompleted(new Action<Boolean>() {
         @Override
         public void apply(Boolean successful) {
@@ -167,7 +167,7 @@ Will<String> will = Wills.will("SOME RESULT")
 ```
 Example (JDK8):
 ```java
-Wills.will("SOME RESULT").whenCompleted(successful -> doSomething());
+Wills.of("SOME RESULT").whenCompleted(successful -> doSomething());
 
 ```
 

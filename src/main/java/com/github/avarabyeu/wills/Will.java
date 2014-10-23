@@ -38,12 +38,12 @@ public interface Will<T> extends ListenableFuture<T> {
     T obtain();
 
     /**
-     * Adds callback to future object. Will be executed if future object is availible
+     * Adds callback to future object. Will be executed if future is successful
      *
      * @param action Action to be performed on future result
      * @return This object
      */
-    Will<T> whenDone(Action<T> action);
+    Will<T> whenSuccessful(Action<T> action);
 
     /**
      * Adds callback to future object. Will be executed if some exception is thrown
