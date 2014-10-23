@@ -4,16 +4,16 @@ Useful utils built on top of Guava's ListenableFuture
 
 
 * [Maven Dependencies](#maven-dependencies)
-* [The problem 'wills' solve](#the-problem-'wills'-solve)
+* [The problem 'wills' solve](#the-problem-wills-solve)
 * [Creation](#creation)
     * [from JKSs Future](#from-jdks-future)
-    * [from Guava's Future](#from-guava's-listenablefuture)
+    * [from Guava's Future](#from-guavas-listenablefuture)
     * [Decorating ExecutorService](#decorating-executorservice)
 * [Callbacks](#callbacks)
-    * [whenSuccessful](#whenSuccessful)
-    * [whenFailed](#whenFailed)
-    * [whenDone](#whenDone)
-* [Fallback (Replacing Future in case of failure)](#Fallback-Replacing-Future-in-case-of-failure) 
+    * [whenSuccessful](#whensuccessful)
+    * [whenFailed](#whenfailed)
+    * [whenDone](#whendone)
+* [Fallback (Replacing Future in case of failure)](#fallback-replacing-future-in-case-of-failure) 
 
 ## Maven Dependencies
 Last stable version:
