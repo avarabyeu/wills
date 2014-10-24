@@ -248,7 +248,7 @@ future = Futures.withFallback(future, new FutureFallback<String>() {
 });
 ```
 
-Here is more simple version in Will style:
+Here is more simple version in Wills style:
 
 ```java
 WillExecutorService executorService = WillExecutors.willDecorator(Executors.newFixedThreadPool(10));
