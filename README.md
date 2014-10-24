@@ -21,13 +21,13 @@ Last stable version:
 <dependency>
     <groupId>com.github.avarabyeu</groupId>
     <artifactId>wills</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.2</version>
 </dependency>
 ```
 
 ## The problem 'wills' solve
 Google did perfect job releasing Guava - set of very useful utilities for collections, I/O, concurrency and others java APIs.
-Guava's concurrency utilities helps to solve widely used cases such as adding callbacks, transforming/filtering futures. 
+Guava's concurrency utilities helps to implement common asynchronous use cases such as adding callbacks, transforming/filtering futures. 
 But, sometimes it looks a bit ridiculous. Just take a look:
 
 ```java
@@ -80,7 +80,7 @@ executorService.submit(new SomeCallable<String>())
 
 Another words, **using 'wills' you are able to build chained method calls** which makes code cleaner and faster to implement.
 Actually, com.github.avarabyeu.wills.Will interface extends Guava's ListanableFuture with some useful convenience methods.
-Go through documentation to find out explanation about them.
+Go through documentation to find out them explanation.
 
 ## Creation
 
