@@ -174,7 +174,7 @@ public final class Wills {
                 /* throw RuntimeException here? */
                 throw Throwables.propagate(e);
             } catch (ExecutionException e) {
-                throw Throwables.propagate(e);
+                throw Throwables.propagate(e.getCause());
             }
         }
 
