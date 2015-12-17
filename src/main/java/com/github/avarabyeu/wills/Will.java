@@ -17,6 +17,7 @@
 package com.github.avarabyeu.wills;
 
 import com.google.common.base.Function;
+import com.google.common.util.concurrent.AsyncFunction;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.FutureFallback;
 import com.google.common.util.concurrent.ListenableFuture;
@@ -82,7 +83,7 @@ public interface Will<T> extends ListenableFuture<T> {
      * @param fallback New Future Factory
      * @return <b>NEW</b> Will
      */
-    Will<T> replaceFailed(FutureFallback<? extends T> fallback);
+    Will<T> replaceFailed(AsyncFunction<Throwable, ? extends T> fallback);
 
     /**
      * Replaces current Will with new one based on ListenableFuture in case of fail

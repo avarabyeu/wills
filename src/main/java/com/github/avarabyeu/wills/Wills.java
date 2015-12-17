@@ -219,15 +219,15 @@ public final class Wills {
         }
 
         @Override
-        public Will<A> replaceFailed(FutureFallback<? extends A> fallback) {
-            return new Of<A>(Futures.withFallback(delegate(), fallback));
+        public Will<A> replaceFailed(AsyncFunction<Throwable, ? extends A> fallback) {
+            return new Of<A>(Futures.catchingAsync(delegate(),Throwable.class, fallback));
         }
 
         @Override
         public Will<A> replaceFailed(final ListenableFuture<A> future) {
-            return replaceFailed(new FutureFallback<A>() {
+            return replaceFailed(new AsyncFunction<Throwable, A>() {
                 @Override
-                public ListenableFuture<A> create(Throwable t) throws Exception {
+                public ListenableFuture<A> apply(Throwable t) {
                     return future;
                 }
             });
