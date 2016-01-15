@@ -18,6 +18,7 @@ package com.github.avarabyeu.wills;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
+import com.google.common.util.concurrent.AsyncFunction;
 import com.google.common.util.concurrent.FutureFallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
@@ -137,10 +138,10 @@ public class WillsTest {
     public void testReplaceFailed() throws ExecutionException, InterruptedException {
 
         final String ok = "OK";
-        Will<String> okWillFallback = Wills.<String>failedWill(new RuntimeException()).replaceFailed(new FutureFallback<String>() {
-            @Override
-            public ListenableFuture<String> create(Throwable t) throws Exception {
+        Will<String> okWillFallback = Wills.<String>failedWill(new RuntimeException()).replaceFailed(new AsyncFunction<Throwable, String>() {
+            @Override public ListenableFuture<String> apply(@Nullable Throwable input) throws Exception {
                 return Futures.immediateFuture(ok);
+
             }
         });
         SmartAssert.assertSoft(okWillFallback.obtain(), is(ok), "Failed Will is not with Fallback");
